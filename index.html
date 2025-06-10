@@ -4,125 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peta Promosi UMKM Kalirejo</title>
+    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <style>
-        /* CSS untuk memastikan peta mengisi seluruh area tampilan browser */
-        #map {
-            height: 100vh;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        /* Memastikan elemen <body> dan <html> tidak memiliki margin atau padding */
-        body, html {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-groupedlayercontrol@0.6.1/dist/leaflet.groupedlayercontrol.min.css"/>
+    
+    <link rel="stylesheet" href="./css/style.css">
 
-        /* CSS untuk tombol "Temukan Lokasi Saya" */
-        #locate-me-btn {
-            position: absolute; /* Mengatur posisi tombol secara absolut di dalam viewport */
-            bottom: 20px; /* <--- PERUBAHAN: Jarak dari tepi BAWAH */
-            right: 20px; /* Jarak dari tepi kanan */
-            z-index: 1000; /* Memastikan tombol ini berada di atas elemen lain di peta */
-            background-color: #007bff; /* Warna latar belakang biru */
-            border: 2px solid #007bff; /* Border tombol berwarna biru */
-            border-radius: 4px; /* Sudut tombol membulat */
-            padding: 8px 12px; /* Padding di dalam tombol */
-            font-family: sans-serif; /* Jenis font */
-            font-size: 14px; /* Ukuran font */
-            cursor: pointer; /* Mengubah kursor menjadi pointer saat diarahkan ke tombol */
-            box-shadow: 0 1px 5px rgba(0,0,0,0.4); /* Efek bayangan tombol */
-            color: white; /* Warna teks putih agar kontras dengan latar belakang biru */
-        }
-        #locate-me-btn:hover {
-            background-color: #0056b3; /* Warna latar belakang saat kursor di atas tombol (biru lebih gelap) */
-            border-color: #0056b3; /* Warna border saat hover */
-        }
-    </style>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script src="https://unpkg.com/leaflet-groupedlayercontrol@0.6.1/dist/leaflet.groupedlayercontrol.min.js"></script>
+    
     <script src="./js/umkm_data.js"></script>
 </head>
 <body>
     <div id="map"></div>
-
-    <button id="locate-me-btn">Temukan Lokasi Saya</button>
-
-    <script>
-        var map = L.map('map').setView([-7.136944, 110.423611], 16);
     
-        var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-        });
-
-        var osmLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        });
-
-        satelliteLayer.addTo(map);
-
-        var baseLayers = {
-            "Satelit (Esri)": satelliteLayer,
-            "Peta Jalan (OSM)": osmLayer
-        };
-
-        L.control.layers(baseLayers).addTo(map);
-
-        if (typeof umkmData !== 'undefined' && umkmData.length > 0) {
-            umkmData.forEach(function(umkm) {
-                L.marker(umkm.coordinates).addTo(map)
-                    .bindPopup(`<b>${umkm.name}</b><br>${umkm.description}<br><a href="${umkm.link}" target="_blank">Selengkapnya / Dapatkan Rute</a>`);
-            });
-        } else {
-            console.warn("umkmData tidak ditemukan atau kosong. Marker UMKM tidak ditambahkan.");
-        }
-
-        document.getElementById('locate-me-btn').addEventListener('click', function() {
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var lat = position.coords.latitude;
-                    var lon = position.coords.longitude;
-                    var accuracy = position.coords.accuracy;
-
-                    if (window.userLocationMarker) {
-                        map.removeLayer(window.userLocationMarker);
-                    }
-
-                    window.userLocationMarker = L.marker([lat, lon]).addTo(map)
-                        .bindPopup("<b>Lokasi Anda Saat Ini</b><br>Akurasi: " + Math.round(accuracy) + " meter.").openPopup();
-                    
-                    map.setView([lat, lon], 15);
-                }, function(error) {
-                    var errorMessage;
-                    switch(error.code) {
-                        case error.PERMISSION_DENIED:
-                            errorMessage = "Anda menolak permintaan lokasi. Tidak dapat menemukan lokasi Anda.";
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            errorMessage = "Informasi lokasi tidak tersedia (mungkin GPS nonaktif atau masalah jaringan).";
-                            break;
-                        case error.TIMEOUT:
-                            errorMessage = "Waktu permintaan lokasi habis. Pastikan koneksi internet stabil.";
-                            break;
-                        case error.UNKNOWN_ERROR:
-                            errorMessage = "Terjadi kesalahan yang tidak diketahui saat mencoba menemukan lokasi Anda.";
-                            break;
-                        default:
-                            errorMessage = "Terjadi kesalahan Geolocation.";
-                    }
-                    alert(errorMessage);
-                }, {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 0
-                });
-            } else {
-                alert("Browser Anda tidak mendukung fitur Geolocation untuk menemukan lokasi Anda.");
-            }
-        });
-
-    </script>
+    <button id="locate-me-btn">Temukan Lokasi Saya</button>
+    
+    <script src="./js/script.js"></script>
 </body>
 </html>
