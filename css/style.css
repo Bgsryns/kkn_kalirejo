@@ -1,50 +1,27 @@
-/* Aturan dasar untuk membuat peta memenuhi layar */
-html, body, #map {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
+html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden}
+.main-container{display:flex;width:100%;height:100%}
+#map{flex-grow:1;height:100%;transition:margin-left .5s ease}
+#sidebar{width:350px;flex-shrink:0;height:100%;background-color:#fff;box-shadow:2px 0 10px rgba(0,0,0,.1);position:fixed;left:0;top:0;z-index:1001;transform:translateX(-100%);transition:transform .5s ease;overflow-y:auto}
+body.sidebar-open #sidebar{transform:translateX(0)}
+body.sidebar-open #map{margin-left:350px}
+#sidebar-close-btn{position:absolute;top:15px;right:15px;background:#f0f0f0;border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;color:#333;display:flex;align-items:center;justify-content:center;transition:background-color .2s}
+#sidebar-close-btn:hover{background-color:#e0e0e0}
+#sidebar-content{padding:20px}
+#sidebar-image{width:100%;height:200px;object-fit:cover;border-radius:8px;margin-bottom:15px;background-color:#eee}
+#sidebar-title{margin-top:0;margin-bottom:20px;font-size:24px}
+#sidebar-content p{line-height:1.6;color:#555;margin:8px 0}
+.sidebar-contact{margin-top:20px;padding-top:20px;border-top:1px solid #eee;display:flex;flex-direction:column;gap:10px}
+.sidebar-contact a{display:flex;align-items:center;justify-content:center;padding:12px;border-radius:8px;text-decoration:none;font-weight:700;transition:transform .2s}
+.sidebar-contact a:hover{transform:scale(1.03)}
+.sidebar-contact a svg{margin-right:8px}
+#sidebar-whatsapp{background-color:#25d366;color:#fff}
+#sidebar-instagram{background-color:#e4405f;color:#fff}
+#locate-me-btn{position:absolute;bottom:20px;right:20px;z-index:1000;background-color:#007bff;border:2px solid #007bff;border-radius:4px;padding:8px 12px;font-family:sans-serif;font-size:14px;cursor:pointer;box-shadow:0 1px 5px rgba(0,0,0,.4);color:#fff}
+#locate-me-btn:hover{background-color:#0056b3;border-color:#0056b3}
+@media (max-width:768px){body.sidebar-open #map{margin-left:0}#sidebar{width:85%;max-width:340px}}
 
-/* CSS untuk tombol "Temukan Lokasi Saya" */
-#locate-me-btn {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-    background-color: #007bff;
-    border: 2px solid #007bff;
-    border-radius: 4px;
-    padding: 8px 12px;
-    font-family: sans-serif;
-    font-size: 14px;
-    cursor: pointer;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
-    color: white;
-}
-#locate-me-btn:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-}
-
-/* Mengubah ikon default plugin menjadi ikon layer */
-.leaflet-control-layers-toggle {
-    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>');
-    background-size: 20px 20px;
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 36px;
-    height: 36px;
-}
-
-/* Styling untuk panel kontrol layer */
-.leaflet-control-layers {
-    border-radius: 5px;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
-}
-.leaflet-control-layers-group-name {
-    font-weight: bold;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    padding-left: 5px;
-}
+/* GAYA UNTUK SEKSI INFORMASI BARU */
+.info-section{padding:10px 0;border-bottom:1px solid #eee}
+.info-section:last-of-type{border-bottom:none}
+#sidebar-menu{list-style-type:none;padding-left:0;margin-top:5px}
+#sidebar-menu li{background-color:#f9f9f9;padding:8px 12px;border-radius:5px;margin-bottom:5px;color:#333}
