@@ -136,5 +136,5 @@ var umkmData = [
     kisaran_harga: "Rp 20.000 - Rp 35.000",
     pembayaran: "Tunai",
   },
-  //haloo//
+  //haloo gaesss//
 ];
